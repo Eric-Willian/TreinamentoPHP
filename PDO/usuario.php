@@ -6,8 +6,16 @@ class Usuario {
         $this->conn = $dbConn;
     }
 
+    public function emailExiste($email) {
+        $sql = "SELECT cod FROM contas WHERE email = :email LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $email);
+    
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
+    
     public function cadastrar($nome, $email, $senha) {
-        // Hash da senha antes de salvar no banco
         $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO contas (nome, email, senha) VALUES (:nome, :email, :senha)";
