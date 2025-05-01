@@ -1,6 +1,6 @@
 <?php
-require_once 'conecta.php';
-require_once 'usuario.php';
+require_once 'conecta.php';  // Responsável pela conexão com o banco de dados
+require_once 'usuario.php';  // Contém a classe de cadastro e outras funcionalidades
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome  = isset($_POST['nome'])  ? trim($_POST['nome'])  : '';
@@ -12,6 +12,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn = $db->connect();
 
         $usuario = new Usuario($conn);
+
+        // Verifica se o e-mail já está cadastrado
+        if ($usuario->emailExiste($email)) {
+            echo '
+            <div style="color: red; font-family: Arial; text-align: center; padding: 20px;">
+                Este e-mail já está cadastrado. <a href="../index.html">Voltar para o Login</a>
+            </div>';
+            exit;
+        }
+
+        // Tenta cadastrar o novo usuário
         if ($usuario->cadastrar($nome, $email, $senha)) {
             // Telinha de sucesso + redirecionamento
             echo '
@@ -44,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </style>
                 <script>
                     setTimeout(function() {
-                        window.location.href = "../index.html";
+                        window.location.href = "../index.html";  // Redireciona para a página de login
                     }, 3000);
                 </script>
             </head>
@@ -65,4 +76,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo "Requisição inválida.";
 }
+
 ?>
