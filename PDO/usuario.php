@@ -2,6 +2,19 @@
 class Usuario {
     private $conn;
 
+    public function buscarPorEmail($email) {
+        $sql = "SELECT * FROM contas WHERE email = :email LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+    
+        if ($stmt->rowCount() > 0) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);  // Retorna os dados do usuário
+        } else {
+            return false;
+        }
+    }
+
     public function __construct($dbConn) {
         $this->conn = $dbConn;
     }
@@ -34,4 +47,7 @@ class Usuario {
         }
     }
 }
+
+
+
 ?>

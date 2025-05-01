@@ -1,6 +1,6 @@
 <?php
-require_once 'conecta.php';  // Responsável pela conexão com o banco de dados
-require_once 'usuario.php';  // Contém a classe de cadastro e outras funcionalidades
+require_once 'conecta.php';
+require_once 'usuario.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome  = isset($_POST['nome'])  ? trim($_POST['nome'])  : '';
@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $usuario = new Usuario($conn);
 
-        // Verifica se o e-mail já está cadastrado
+
         if ($usuario->emailExiste($email)) {
             echo '
             <div style="color: red; font-family: Arial; text-align: center; padding: 20px;">
@@ -22,9 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Tenta cadastrar o novo usuário
+
         if ($usuario->cadastrar($nome, $email, $senha)) {
-            // Telinha de sucesso + redirecionamento
+
             echo '
             <!DOCTYPE html>
             <html>
